@@ -1,28 +1,42 @@
 ---
 title: "Lab 09: Algorithmic Bias"
-author: "Insert your name here"
-date: "Insert date here"
+author: "Lilly McClendon"
+date: "04.04.2025"
 output: github_document
 ---
 
-## Load Packages and Data  
+## Load Necessary Packages  
 
 First, let's load the necessary packages:  
 
 ```{r load-packages, message = FALSE}
 library(tidyverse)
+library(janitor)
 library(fairness)
 ```
 
-### The data
+## Load the Data
 
-For this lab, we'll use the COMPAS dataset compiled by ProPublica. The data has been preprocessed and cleaned for you. You'll have to load it yourself. The dataset is available in the `data` folder, but I've changed the file name from `compas-scores-two-years.csv` to `compas-scores-2-years.csv`. I've done this help you practice debugging code when you encounter an error.
 
-```{r}
-compas <- read_csv("data/compas-scores-two-years.csv")
+```{r load_Compas_data}
+
+compas <- read_csv("data/compas-scores-2-years.csv") %>%
+  clean_names() %>%
+  rename(decile_score = decile_score_12, 
+         priors_count = priors_count_15)
+
+glimpse(compas)
+
 ```
 
 
-## Additional Exercises  
+## Exercise 1 
 
-Almost there! Keep building on your work and follow the same structure for any remaining exercises. Each exercise builds on the last, so take your time and make sure your code is working as expected.  
+```{r dimensions_compas_dataset}
+
+nrow(compas)
+ncol(compas)
+```
+
+The dimensions of the data set are 7214 x 53. There are 7214 rows of data. Each row in the data set represents a criminal defendant. The variables in this data set are id, first name, last name, the date they were compas screened, sex, birthday, age, age range, race, juvenile felony count, decile score, juvenile misdemeanor count, juvenile other count, priors count, how many days prior to screening the defendant was arrested, the date they went into jail for the compas screening, the date they left jail for the compas screening, their case number for the compas screening, arrest date for the compas screening, days from compas, the degree of their charge for the compas screening, a description of their charge for the compas screening, is recidivism, their case number for the recidivism case, the degree of their charge for the recidivism case, the days from arrest for the recidivism case, their offense date of the recidivism case, a description of their charge for the recidivism case, the date they entered jail for the recidivism case, the date they left jail for the recidivism case. There are also variables for violent recidivism, if violent recidivism occurred and coded, violent recidivism case number, violent recidivism charge degree, violent recidivism offense date, description of violent recidivism charge. There are variables for the type of assessment, the decile score, an interpretation of the decile score, date of screening, violence type assessment, violence decile score, violence score in text, violence screening date, date in custody, date left custody, prior counts, start, end, eent, and two-year recidivism. 
+
