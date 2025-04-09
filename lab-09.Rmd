@@ -40,3 +40,57 @@ ncol(compas)
 
 The dimensions of the data set are 7214 x 53. There are 7214 rows of data. Each row in the data set represents a criminal defendant. The variables in this data set are id, first name, last name, the date they were compas screened, sex, birthday, age, age range, race, juvenile felony count, decile score, juvenile misdemeanor count, juvenile other count, priors count, how many days prior to screening the defendant was arrested, the date they went into jail for the compas screening, the date they left jail for the compas screening, their case number for the compas screening, arrest date for the compas screening, days from compas, the degree of their charge for the compas screening, a description of their charge for the compas screening, is recidivism, their case number for the recidivism case, the degree of their charge for the recidivism case, the days from arrest for the recidivism case, their offense date of the recidivism case, a description of their charge for the recidivism case, the date they entered jail for the recidivism case, the date they left jail for the recidivism case. There are also variables for violent recidivism, if violent recidivism occurred and coded, violent recidivism case number, violent recidivism charge degree, violent recidivism offense date, description of violent recidivism charge. There are variables for the type of assessment, the decile score, an interpretation of the decile score, date of screening, violence type assessment, violence decile score, violence score in text, violence screening date, date in custody, date left custody, prior counts, start, end, eent, and two-year recidivism. 
 
+## Exercise 2 
+
+```{r dimensions_compas_dataset_name}
+library(dplyr)
+distinct(compas, name)
+```
+
+There are 7,158 unique names in the compas data set. It may be that there are fewer unique defendants in the data set because there are defendants who have committed another crime and were screened again, or that some defendants could share a name. 
+
+## Exercise 3 
+
+
+```{r compas_distribution}
+library(ggplot2)
+ggplot(compas, aes(x=decile_score)) + 
+  geom_histogram(binwidth = .5) + 
+  scale_x_continuous(breaks = seq(0,13,1))
+```
+
+The distribution is a unimodal and positively skewed (right-skewed).The most common decile_score is 1. 
+
+## Exercise 4 
+
+```{r demographic_distribution_race}
+library(ggplot2)
+ggplot(compas, aes(x=race)) + 
+  geom_bar(aes(x=forcats::fct_infreq(race))) + 
+  theme(axis.text.x = element_text(angle = 20, vjust = .5))
+```
+
+```{r demographic_distribution_sex}
+library(ggplot2)
+ggplot(compas, aes(x=sex)) + 
+  geom_bar(aes(x=forcats::fct_infreq(sex)))
+```
+
+```{r demographic_distribution_age_cat}
+library(ggplot2)
+ggplot(compas, aes(x=age_cat)) +
+  geom_bar()
+```
+
+```{r demographic_distribution_age_cat_reorder}
+library(ggplot2)
+library(tidyverse)
+
+agecat_compas <- subset(compas, select=c("age_cat"))
+
+agecat_compas$age_cat <- factor(agecat_compas$age_cat, levels = c ("Less than 25", "25 - 45", "Greater than 45"))
+
+ggplot(agecat_compas, aes(x=age_cat)) + 
+  geom_bar() + 
+  labs(x="Age Category", y = "Count")
+```
